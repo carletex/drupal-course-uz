@@ -18,9 +18,28 @@ function codpostal_entity_info() {
       ),
       'entity keys' => array ('id' => 'cid'),
       'module' => 'codpostal'
-    )
+    ),
+    'codigos_calles' => array(
+      'label' => 'Calles',
+      'entity class' => 'Entity',
+      'controller class' => 'EntityAPIController',
+      'base table' => 'codpostal_calles',
+      'fieldable' => FALSE,
+      'entity keys' => array(
+        'id' => 'cid'
+      ),
+      'module' => 'codpostal',
+    ),
   );
 }
+
+/**
+ * Implements hook_entity_property_info_alter().
+ */
+function codpostal_entity_property_info_alter(&$info) {
+  $info['codigos_calles']['properties']['code']['type'] = 'codigo_postal';
+}
+
 
 function codpostal_access() {
   // ToDo: cualquier podría acceder.

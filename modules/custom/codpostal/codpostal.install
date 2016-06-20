@@ -30,5 +30,41 @@ function codpostal_schema() {
     'primary key' => array('cid')
   );
 
+  $schema['codpostal_calles'] = array(
+    'description' => 'Calles',
+    'fields' => array(
+      'cid' => array(
+        'description' => 'ID único de la tabla.',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+      ),
+      'code' => array(
+        'description' => 'Código postal.',
+        'type' => 'varchar',
+        'length' => 8,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'name' => array(
+        'description' => 'Nombre de la localidad.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('cid'),
+    'foreign keys' => array(
+      'fk_calle_codigo' => array(
+        'table' => 'codpostal_codigos',
+        'columns' => array('code' => 'cid'),
+      ),
+    ),
+    // 'indexes' => array(
+    // 'unique keys' => array(
+    // 'foreign keys' => array(
+  );
+
   return $schema;
 }

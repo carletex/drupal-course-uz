@@ -61,6 +61,7 @@ function cursodrupal_install_all_updates() {
   drupal_flush_all_caches();
   drupal_get_messages('status');
   // Salto 7001
+  cursodrupal_update_7002();
 }
 
 /**

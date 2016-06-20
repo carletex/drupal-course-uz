@@ -12,6 +12,12 @@ function catalogo_menu() {
     'type' => MENU_CALLBACK
   );
 
+  $items['catalogo'] = array(
+    'title' => 'Gestión del catálogo',
+    'page callback' => '_catalogo_show_catalogo_full',
+    'access arguments' => array('access content'),
+  );
+
   return $items;
 }
 
@@ -41,11 +47,16 @@ function catalogo_form($form, &$form_state) {
   );
 
   $form['config']['catalogo_pdf'] = array(
-  '#title' => 'PDF del catálogo',
-  '#type' => 'managed_file',
-  '#upload_location' => 'public://catalogo/',
-  '#default_value' => variable_get('catalogo_pdf', 0)
-);
+    '#title' => 'PDF del catálogo',
+    '#type' => 'managed_file',
+    '#description' => 'Sube el catálogo en formato PDF',
+    '#upload_location' => 'public://catalogos/',
+    '#default_value' => variable_get('catalogo_pdf', ''),
+    '#upload_validators' => array(
+      'file_validate_extensions' => array('pdf'),
+    ),
+    '#required' => TRUE,
+  );
 
   $form["submit_button"] = array(
     '#type' => 'submit',
@@ -66,7 +77,11 @@ function catalogo_form_submit($form, &$form_state) {
   variable_set('catalogo_desc_larga', $form_state['values']['desc_larga']);
   variable_set('catalogo_oferta', $form_state['values']['oferta']);
   variable_set('catalogo_pdf', $form_state['values']['catalogo_pdf']);
-  drupal_set_message('Se ha guardado correctamente');
+  $file = file_load($form_state['values']['catalogo_pdf']);
+  $file->status = FILE_STATUS_PERMANENT;
+  file_save($file);
+  file_usage_add($file, 'catalogo', 'file', 1);
+  drupal_set_message('Las opciones del catálogo se han guardado correctamente');
 }
 
 /**
@@ -110,4 +125,19 @@ function _catalogo_get_info() {
 
   return $content;
 
+}
+
+function _catalogo_show_catalogo_full() {
+  $content = '';
+  $content .= '<p>' . variable_get('catalogo_desc_larga') . '</p>';
+  if (variable_get('catalogo_oferta')) {
+    $content .= '<p>Todo nuestro catálogo al 20%!</p>';
+  }
+  if ($fid = variable_get('catalogo_pdf')) {
+    $file = file_load($fid);
+    if ($file) {
+      $content .= l('Catalogo PDF', $file->uri);
+    }
+  }
+  return $content;
 }
