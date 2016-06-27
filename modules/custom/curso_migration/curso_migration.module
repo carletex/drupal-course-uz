@@ -1,0 +1,29 @@
+<?php
+
+/**
+ * Implements hook_migrate_api().
+ */
+
+ function curso_migration_migrate_api() {
+  $api = array(
+    'api' => 2,
+    'groups' => array(
+      'curso' => array(
+        'title' => 'Migraciones del Curso Drupal'
+      )
+    ),
+    'migrations' => array(
+      'entradasblog' => array(
+        'class_name' => 'EntradasBlogMigration',
+        'group_name' => 'curso',
+        'dependencies' => array('categoriesblog'),
+      ),
+      'categoriesblog' => array(
+        'class_name' => 'CategoriesBlogMigration',
+        'group_name' => 'curso',
+      ),
+    )
+  );
+
+  return $api;
+ }
