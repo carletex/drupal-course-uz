@@ -110,20 +110,23 @@ function catalogo_block_view($delta) {
 }
 
 function _catalogo_get_info() {
-  $content = '';
-  if (variable_get('catalogo_oferta')) {
-    $content .= '<p>¡Todo nuestro catálogo al 20%!</p>';
-  }
-  $content .= '<p>' . variable_get('catalogo_desc_corta') .'</p>';
+  // $content = '';
+  // if (variable_get('catalogo_oferta')) {
+  //   $content .= '<p>¡Todo nuestro catálogo al 20%!</p>';
+  // }
+  // $content .= '<p>' . variable_get('catalogo_desc_corta') .'</p>';
 
-  if($fid = variable_get('catalogo_pdf', 0)) {
-    $file = file_load($fid);
-    if ($file) {
-      $content .= l('Catalogo PDF', file_create_url($file->uri));
-    }
-  }
+  // if($fid = variable_get('catalogo_pdf', 0)) {
+  //   $file = file_load($fid);
+  //   if ($file) {
+  //     $content .= l('Catalogo PDF', file_create_url($file->uri));
+  //   }
+  // }
 
-  return $content;
+  $variables['catalogo_desc_corta'] = variable_get('catalogo_desc_corta');
+  $variables['catalogo_oferta'] = variable_get('catalogo_oferta');
+  $variables['catalogo_pdf'] = variable_get('pdf');
+  return theme('catalogo_bloque', $variables);
 
 }
 
@@ -140,4 +143,31 @@ function _catalogo_show_catalogo_full() {
     }
   }
   return $content;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function catalogo_theme($existing, $type, $theme, $path) {
+  return array(
+    'catalogo_bloque' => array(
+      'template' => 'catalogo-bloque',
+      'variables' => array(
+        'catalogo_desc_corta' => NULL,
+        'catalogo_oferta' => NULL,
+        'catalogo_pdf' => NULL,
+      )
+    )
+  );
+}
+
+
+function template_process_catalogo_bloque(&$variables) {
+  if ($variables['catalogo_pdf']) {
+    $file = file_load($variables['catalogo_pdf']);
+    if ($file) {
+      $pdf = l('Catalogo PDF', file_create_url($file->uri));
+      $variables['enlace_pdf'] = $pdf;
+    }
+  }
 }
