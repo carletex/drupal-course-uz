@@ -27,3 +27,30 @@
 
   return $api;
  }
+
+/**
+ * Implements hook_menu()
+ */
+ function curso_migration_menu() {
+  $items['blog_legacy_id/%legacy_to_nid'] = array(
+    'title' => 'Redirección de legacy ID a nid',
+    'page callback' => 'drupal_goto',
+    'page arguments' => array(1),
+    'access callback' => 'user_is_logged_in'
+  );
+
+  return $items;
+}
+
+function legacy_to_nid_load($lid) {
+  $result = db_select('migrate_map_entradasblog', 'mme')
+    ->fields('mme', array('destid1'))
+    ->condition('sourceid1', $lid, '=')
+    ->execute()
+    ->fetchField(0);
+
+  if ($result) {
+    return 'node/' . $result;
+  }
+  return FALSE;
+}
