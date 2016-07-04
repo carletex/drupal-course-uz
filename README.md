@@ -17,3 +17,29 @@ Perfil base para el curso Drupal en la Universidad de Zaragoza
 - Ejercicio catálogo (página de admin + FAPI + block_info)
 - Custom entities
 - Ejercicio códigos postales (custom entity + CRUD admin ui)
+
+## Día 3
+
+- /catalogo Route
+- File permanent
+- Creación de custom entity relacionada (Calles)
+- Integración de custom entities con vistas
+
+## Día 4
+
+- Grupos de migración con Migrate
+- Migración de artículos de blog
+- Método migrate (prepareRow)
+- SourceMigration
+- Migración de imágenes
+
+
+## Día 5
+
+- Estructura theme
+- Sobreescribir TPL's
+- Process && Preprocess con template.php
+- Opciones del tema con theme-setting.php
+- Theming para módulos
+    - hook_theme
+    - TPL'S vs Theme functions
